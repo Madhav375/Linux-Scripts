@@ -1,0 +1,45 @@
+#!/bin/bash
+# Author: Madhav Kalra
+# Date: 15/11/25
+# --- Script to Backup a Directory ---
+
+# check if user passed a directory
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <target_directory>"
+    exit 1
+fi
+
+# path of the target directory
+target_path="$1"
+
+# verify target directory exists
+if [ ! -d "$target_path" ]; then
+    echo "Error: Target directory '$target_path' does not exist."
+    exit 1
+fi
+
+# timestamp for backup folder & logs
+timestamp=$(date +"%Y-%m-%d_%H-%M-%S")
+
+# backup and log directory paths
+backup_path="/home/madhav_kalra/backup/directories"
+log_path="/home/madhav_kalra/backup/logs"
+mkdir "$backup_folder"
+
+# copy directory
+cp -r "$target_path" "$backup_folder"
+
+# log file
+log_file="$log_path/log.txt"
+
+# create log file if not exists
+if [ ! -f "$log_file" ]; then
+    touch "$log_file"
+fi
+
+# write to log
+echo "[$timestamp] Backup of '$target_path' completed -> $backup_folder" >> "$log_file"
+
+# success message
+echo "Backup successful!"
+echo "Files saved in: $backup_folder"

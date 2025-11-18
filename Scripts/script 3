@@ -1,0 +1,36 @@
+#!/bin/bash
+# Author: Madhav Kalra
+# Date: 17/11/2025
+# --- Automated File Download Script ---
+
+# Directory where downloaded files will be stored
+download_dir="$HOME/auto_downloads"
+
+# Log file
+log_file="$download_dir/download.log"
+
+# Ensure the download directory exists
+mkdir -p "$download_dir"
+
+# Check if user provided a URL
+if [ -z "$1" ]; then
+    echo "Usage: $0 <file_url>"
+    exit 1
+fi
+
+file_url="$1"
+
+# Timestamp for logging
+timestamp=$(date +"%Y-%m-%d %H:%M:%S")
+
+# Use wget to download the file
+wget -P "$download_dir" "$file_url" 2>>"$log_file"
+
+# Check if download was successful
+if [ $? -eq 0 ]; then
+    echo "[$timestamp] Download successful: $file_url" >> "$log_file"
+    echo "File downloaded to: $download_dir"
+else
+    echo "[$timestamp] Download failed: $file_url" >> "$log_file"
+    echo "Error: Download failed!"
+fi

@@ -1,0 +1,23 @@
+#!/bin/bash
+# Author: Madhav Kalra
+# Date: 17/11/25
+# --- CPU & Memory Monitoring Script ---
+
+log_file="/home/$USER/cpu_memory_log.txt"
+interval=5   # time in seconds between logs (you can change this)
+
+echo "CPU & Memory Monitoring Started..."
+echo "Log file: $log_file"
+echo "-----------------------------------" >> "$log_file"
+
+while true
+do
+    timestamp=$(date +"%Y-%m-%d %H:%M:%S")
+
+    cpu_usage=$(top -bn1 | grep "Cpu(s)" | awk '{print $2 + $4}')
+    mem_usage=$(free | grep Mem | awk '{printf "%.2f", $3/$2 * 100}')
+
+    echo "[$timestamp] CPU: ${cpu_usage}% | Memory: ${mem_usage}%" >> "$log_file"
+
+    sleep $interval
+done
